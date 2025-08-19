@@ -15,7 +15,41 @@ var next: Boolean
     W = {One} ∪ {Two} ∪ {Three} ∪ {Four} ∪ {Five} ∪ {Six}
     over ↔ (∃w(w ∈ W ∧ |w| = 3 ∧ ∑a∈w a < 15) ∨ ∀w (w ∈ W ∧ |w| = 3 ∧ ∑a∈w a = 15))
 
+
+Occ ⊆ S = Occupied positions (all the spots that have a peg already).
+
+Free ⊆ S = Free positions (S - Occ).
+
+One, Two, Three = sets of pegs placed in rows (T, M, B).
+
+Four, Five, Six = sets of pegs placed in columns (L, C, R).
+
+Peg ⊆ P = pegs not yet used (P - (all placed pegs)).
+
+W = collection of all these sets ({One, Two, Three, Four, Five, Six}).
+
+ok ∈ {true,false} = tells if the last move was valid.
+
+turn ∈ {true,false} = tells whose turn it is (true = Player A, false = Player B).
+
+next ∈ {true,false} = auxiliary variable for row/column assignment.
+
+over ∈ {true,false} = whether the game has ended.
  */
+
+
+fun printBoard(s: Array<Array<Char>>) {
+    for (i in s.indices) {
+        for (j in s[i].indices) {
+            print(" ${s[i][j]} ")
+            if (j < s[i].lastIndex) print("|")
+        }
+        println()
+        if (i < s.lastIndex) {
+            println("---+---+---")
+        }
+    }
+}
 
 
 fun main(){
@@ -30,6 +64,7 @@ fun main(){
         ok = false
         next = false
         turn = true
+        over = false
 
         var one = mutableListOf<Int>()
         var two = mutableListOf<Int>()
@@ -38,9 +73,20 @@ fun main(){
         var five = mutableListOf<Int>()
         var six = mutableListOf<Int>()
 
-        var peg = arrayOf(1,2,3,4,5,6,7,8,9)
+        var peg = listOf(1,2,3,4,5,6,7,8,9)
 
-        nextPlayerMove(free)
+        do{
+
+            try Runtime.getRuntime().exec("cmd /c cls")
+            catch (e: Exception) println("Exception details: ${e.message}")
+
+            printBoard(s)
+
+            //gameplay
+
+            over = true
+
+        }while(!over)
 
         println("Do you want to play again? (Y/N)")
         while(invalid)
@@ -58,7 +104,7 @@ fun main(){
 }
 
 fun nextPlayerMove(free: Array){
-    
+
     val peg = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..9 } ?: //invalid input ask again
     val position = readlnOrNull()?.toIntOrNull()?.takeIf { it in // has to be in the free array
 
