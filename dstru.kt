@@ -1,7 +1,6 @@
 val occ = Array(3) { Array<Int>(3) { 0 } }
 val free = Array(3) { Array<Int>(3) { 0 } }
 
-var peg: Int
 var w: Int
 
 var ok: Boolean
@@ -9,34 +8,10 @@ var turn: Boolean
 var over: Boolean
 var next: Boolean
 
-/*
-    Free = S − Occ
-    Peg = P − (One ∪ Two ∪ Three ∪ Four ∪ Five ∪ Six)
-    W = {One} ∪ {Two} ∪ {Three} ∪ {Four} ∪ {Five} ∪ {Six}
-    over ↔ (∃w(w ∈ W ∧ |w| = 3 ∧ ∑a∈w a < 15) ∨ ∀w (w ∈ W ∧ |w| = 3 ∧ ∑a∈w a = 15))
+//player 1 TMB, 2 LCR
 
-
-Occ ⊆ S = Occupied positions (all the spots that have a peg already).
-
-Free ⊆ S = Free positions (S - Occ).
-
-One, Two, Three = sets of pegs placed in rows (T, M, B).
-
-Four, Five, Six = sets of pegs placed in columns (L, C, R).
-
-Peg ⊆ P = pegs not yet used (P - (all placed pegs)).
-
-W = collection of all these sets ({One, Two, Three, Four, Five, Six}).
-
-ok ∈ {true,false} = tells if the last move was valid.
-
-turn ∈ {true,false} = tells whose turn it is (true = Player A, false = Player B).
-
-next ∈ {true,false} = auxiliary variable for row/column assignment.
-
-over ∈ {true,false} = whether the game has ended.
- */
-
+//TODO: interpret this in plain text:
+//over ↔ (∃w(w ∈ W ∧ |w| = 3 ∧ ∑a∈w a < 15) ∨ ∀w (w ∈ W ∧ |w| = 3 ∧ ∑a∈w a = 15))
 
 fun printBoard(s: Array<Array<Char>>) {
     for (i in s.indices) {
@@ -50,7 +25,6 @@ fun printBoard(s: Array<Array<Char>>) {
         }
     }
 }
-
 
 fun main(){
 
@@ -73,7 +47,7 @@ fun main(){
         var five = mutableListOf<Int>()
         var six = mutableListOf<Int>()
 
-        var peg = listOf(1,2,3,4,5,6,7,8,9)
+        var peg = mutableListOfistOf(1,2,3,4,5,6,7,8,9)
 
         do{
 
@@ -83,6 +57,14 @@ fun main(){
             printBoard(s)
 
             //gameplay
+            next = !next
+
+            val peg = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..9 } ?: //invalid input ask again
+            val pos = readlnOrNull()?.toIntOrNull()?.takeIf { it in // has to be in the free array
+
+                //    peg ∈ Peg ∧ pos ∈ Free → ok = ¬ok
+                //    ∧ Occ = Occ ∪ {pos}
+            nextPlayerMove(peg, pos)
 
             over = true
 
@@ -103,82 +85,15 @@ fun main(){
 
 }
 
-fun nextPlayerMove(free: Array){
-
-    val peg = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..9 } ?: //invalid input ask again
-    val position = readlnOrNull()?.toIntOrNull()?.takeIf { it in // has to be in the free array
+fun nextPlayerMove(peg: Int, pos: Int){
+//    - A function that takes in two points. A certain peg (peg) gains a certain 
+//  amount of points (P) when it is position in a position (pos) with coordinates (S). 
 
 }
 
-/*
-to do:
-
-Make sure Occ (occupied) and Free (free) are updated correctly during gameplay
-
-At start: Occ = ∅, Free = S (all positions)
-
-After a move: add position to Occ, remove from Free
-
-Implement function NextPlayerMove(peg ∈ P, pos ∈ S)
-
-Check: peg ∈ Peg and pos ∈ Free → ok = !ok and update Occ
-
-If ok ∧ pos ∈ T → add peg to One, toggle next
-
-If ok ∧ pos ∈ M → add peg to Two, toggle next
-
-If ok ∧ pos ∈ B → add peg to Three, toggle next
-
-If ok ∧ next ∧ pos ∈ L → add peg to Four, toggle next, toggle ok
-
-If ok ∧ next ∧ pos ∈ C → add peg to Five, toggle next, toggle ok
-
-If ok ∧ next ∧ pos ∈ R → add peg to Six, toggle next, toggle ok
-
- Remove peg from Peg once it is placed
-
-
- Build W = {One, Two, Three, Four, Five, Six}
-
- Check if game is over:
-
-If ∃w (subset of W with size 3) where ∑a∈w < 15 → one player wins
-
-If ∀w (subset of W with size 3) where ∑a∈w = 15 → the other player wins
-
- Implement result logic:
-
-over ∧ turn ∧ ∃w(sum<15) → B wins
-
-over ∧ ¬turn ∧ ∃w(sum<15) → A wins
-
-over ∧ turn ∧ ∀w(sum=15) → A wins
-
-over ∧ ¬turn ∧ ∀w(sum=15) → B wins
-
-
- While !over, alternate turns (turn = !turn)
-
- Prompt correct player (A or B) to pick a peg and a pos
-
- Validate: peg must be unused (peg ∈ Peg), pos must be free (pos ∈ Free)
-
-
- Display board after each move (Occ positions filled with peg numbers)
-
- Handle invalid input gracefully (position already occupied, peg already used)
-
- Print result at the end (A wins or B wins)
-
- Use enums or constants for player turns (instead of plain booleans)
-
- Create helper functions:
-
-printBoard()
-
-isGameOver()
-
-placePeg()
-
- Add scoring or replay tracking
-*/
+fun gameOver(over: Boolean): String{
+    if ()
+    return "Player A wins"
+    else
+    return "Player B wins"
+}
