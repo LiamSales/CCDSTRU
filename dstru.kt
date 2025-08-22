@@ -1,5 +1,5 @@
-val occ = Array(3) { Array<Int>(3) { 0 } }
-val free = Array(3) { Array<Int>(3) { 0 } }
+val free = Array(3) { Array<Boolean>(3) { True } }//should we make this a list instead?
+val occ = Array(3) { Array<Boolean>(3) { False } }//should we make this a list instead just like peg? so we can add and remove
 
 var w: Int
 
@@ -8,10 +8,16 @@ var turn: Boolean
 var over: Boolean
 var next: Boolean
 
+var one = mutableListOf<Int>()
+var two = mutableListOf<Int>()
+var three = mutableListOf<Int>()
+var four = mutableListOf<Int>()
+var five = mutableListOf<Int>()
+var six = mutableListOf<Int>()
+
 //player 1 TMB, 2 LCR
 
-//TODO: interpret this in plain text:
-//over ↔ (∃w(w ∈ W ∧ |w| = 3 ∧ ∑a∈w a < 15) ∨ ∀w (w ∈ W ∧ |w| = 3 ∧ ∑a∈w a = 15))
+//win if at least 1 less than 15 sum or every sum in w is exactly 15
 
 fun printBoard(s: Array<Array<Char>>) {
     for (i in s.indices) {
@@ -39,13 +45,6 @@ fun main(){
         next = false
         turn = true
         over = false
-
-        var one = mutableListOf<Int>()
-        var two = mutableListOf<Int>()
-        var three = mutableListOf<Int>()
-        var four = mutableListOf<Int>()
-        var five = mutableListOf<Int>()
-        var six = mutableListOf<Int>()
 
         var peg = mutableListOfistOf(1,2,3,4,5,6,7,8,9)
 
@@ -85,9 +84,25 @@ fun main(){
 
 }
 
-fun nextPlayerMove(peg: Int, pos: Int){
-//    - A function that takes in two points. A certain peg (peg) gains a certain 
-//  amount of points (P) when it is position in a position (pos) with coordinates (S). 
+fun nextPlayerMove(peg: Int, pos: Pair<Int,Int>){
+//    - A function that takes in two points. pegs get P points when its in a position with S coordinates
+
+    if (free[pos] == True ){
+        ok = !ok
+        free[pos] == False
+        occ[pos] == True
+    }
+
+
+    /* ok ∧ pos ∈ T  → One = One ∪ {peg}
+    ∧ next = ¬next
+    - variable (ok) is true and the position */
+
+    //if (ok && j value of pos is 0 )
+    // One gets the peg int added to its list
+    // next = !next
+
+    //switch case on the numbers
 
 }
 
