@@ -1,7 +1,6 @@
-val free = Array(3) { Array<Boolean>(3) { True } }//should we make this a list instead?
-val occ = Array(3) { Array<Boolean>(3) { False } }//should we make this a list instead just like peg? so we can add and remove
-
-var w: Int
+val free = mutableListOfistOf<Pair<Int,Int>>()
+val occ = mutableListOfistOf<Pair<Int,Int>>()
+var w: mutableListOf<Int>()
 
 var ok: Boolean
 var turn: Boolean
@@ -15,14 +14,15 @@ var four = mutableListOf<Int>()
 var five = mutableListOf<Int>()
 var six = mutableListOf<Int>()
 
-//player 1 TMB, 2 LCR
-
 //win if at least 1 less than 15 sum or every sum in w is exactly 15
 
 fun printBoard(s: Array<Array<Char>>) {
     for (i in s.indices) {
         for (j in s[i].indices) {
-            print(" ${s[i][j]} ")
+            if (s[i][j] != 0)
+                print(" ${s[i][j]} ")
+            else
+                print("   ")
             if (j < s[i].lastIndex) print("|")
         }
         println()
@@ -41,12 +41,21 @@ fun main(){
 
         val s = Array(3) { Array<Int>(3) { 0 } }
 
+        // add each coordinate pair to free 1-based indexing
+
         ok = false
         next = false
         turn = true
         over = false
 
-        var peg = mutableListOfistOf(1,2,3,4,5,6,7,8,9)
+        one.clear()
+        two.clear()
+        three.clear()
+        four.clear()
+        five.clear()
+        six.clear()
+
+        var peg = mutableListOf(1,2,3,4,5,6,7,8,9)
 
         do{
 
@@ -56,18 +65,18 @@ fun main(){
             printBoard(s)
 
             //gameplay
-            next = !next
 
             val peg = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..9 } ?: //invalid input ask again
-            val pos = readlnOrNull()?.toIntOrNull()?.takeIf { it in // has to be in the free array
+            val pos = readlnOrNull()?.toIntOrNull()?.takeIf { it in // has to be in the free array ask again if not
 
-                //    peg ∈ Peg ∧ pos ∈ Free → ok = ¬ok
-                //    ∧ Occ = Occ ∪ {pos}
             nextPlayerMove(peg, pos)
 
-            over = true
+            if(){
+                over = true
+                gameOver(over)
+            }
 
-        }while(!over)
+        } while(!over)
 
         println("Do you want to play again? (Y/N)")
         while(invalid)
@@ -85,7 +94,6 @@ fun main(){
 }
 
 fun nextPlayerMove(peg: Int, pos: Pair<Int,Int>){
-//    - A function that takes in two points. pegs get P points when its in a position with S coordinates
 
     if (free[pos] == True ){
         ok = !ok
@@ -93,22 +101,26 @@ fun nextPlayerMove(peg: Int, pos: Pair<Int,Int>){
         occ[pos] == True
     }
 
+    when (pos.first){
+        1 -> one.add(peg)
+        2 -> two.add(peg)
+        3 -> three.add(peg)
+    }
 
-    /* ok ∧ pos ∈ T  → One = One ∪ {peg}
-    ∧ next = ¬next
-    - variable (ok) is true and the position */
+    when (pos.second){
+        1 -> four.add(peg)
+        2 -> five.add(peg)
+        3 -> six.add(peg)
+    }
 
-    //if (ok && j value of pos is 0 )
-    // One gets the peg int added to its list
-    // next = !next
-
-    //switch case on the numbers
+    next = !next
+    ok = !ok
 
 }
 
-fun gameOver(over: Boolean): String{
-    if ()
-    return "Player A wins"
+fun gameOver(over): String{
+    if (over &&)
+        return "Player A wins"
     else
-    return "Player B wins"
+        return "Player B wins"
 }
