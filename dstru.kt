@@ -1,11 +1,11 @@
-val free = mutableListOfistOf<Pair<Int,Int>>()
-val occ = mutableListOfistOf<Pair<Int,Int>>()
-var w: mutableListOf<Int>()
+val free = mutableListOf<Pair<Int,Int>>()
+val occ = mutableListOf<Pair<Int,Int>>()
+var w = mutableListOf<Int>()
 
-var ok: Boolean
-var turn: Boolean
-var over: Boolean
-var next: Boolean
+var ok: Boolean = false
+var turn: Boolean = true // true: Player A, false: Player B
+var over: Boolean = false
+var next: Boolean = false
 
 var one = mutableListOf<Int>()
 var two = mutableListOf<Int>()
@@ -14,9 +14,9 @@ var four = mutableListOf<Int>()
 var five = mutableListOf<Int>()
 var six = mutableListOf<Int>()
 
-//win if at least 1 less than 15 sum or every sum in w is exactly 15
+// TODO: Implement win condition logic
 
-fun printBoard(s: Array<Array<Char>>) {
+fun printBoard(s: Array<Array<Int>>) {
     for (i in s.indices) {
         for (j in s[i].indices) {
             if (s[i][j] != 0)
@@ -42,6 +42,13 @@ fun main(){
         val s = Array(3) { Array<Int>(3) { 0 } }
 
         // add each coordinate pair to free 1-based indexing
+        free.clear()
+        occ.clear()
+        for (i in 1..3) {
+            for (j in 1..3) {
+                free.add(Pair(i, j))
+            }
+        }
 
         ok = false
         next = false
@@ -55,26 +62,45 @@ fun main(){
         five.clear()
         six.clear()
 
-        var peg = mutableListOf(1,2,3,4,5,6,7,8,9)
+        var pegList = mutableListOf(1,2,3,4,5,6,7,8,9)
 
         do{
 
-            try Runtime.getRuntime().exec("cmd /c cls")
-            catch (e: Exception) println("Exception details: ${e.message}")
+            try { print("\u001b[H\u001b[2J") }
+            catch (e: Exception) { println("Exception details: ${e.message}") }
 
             printBoard(s)
 
-            //gameplay
-
-            val peg = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..9 } ?: //invalid input ask again
-            val pos = readlnOrNull()?.toIntOrNull()?.takeIf { it in // has to be in the free array ask again if not
+            // TODO: Input handling for peg and pos
+            var peg: Int? = null
+            var pos: Pair<Int, Int>? = null
+            while (peg == null) {
+                println("Enter peg (1-9):")
+                peg = readlnOrNull()?.toIntOrNull()?.takeIf { it in pegList }
+                if (peg == null) println("Invalid peg. Try again.")
+            }
+            while (pos == null) {
+                println("Enter row (1-3):")
+                val row = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..3 }
+                println("Enter column (1-3):")
+                val col = readlnOrNull()?.toIntOrNull()?.takeIf { it in 1..3 }
+                if (row != null && col != null && free.contains(Pair(row, col))) {
+                    pos = Pair(row, col)
+                } else {
+                    println("Invalid position. Try again.")
+                }
+            }
 
             nextPlayerMove(peg, pos)
 
-            if(){
-                over = true
-                gameOver(over)
-            }
+            // TODO: Implement win condition check here
+            // if (checkWin()) {
+            //     over = true
+            //     gameOver(over)
+            // }
+
+            // Alternate player only after valid move
+            turn = !turn
 
         } while(!over)
 
@@ -95,10 +121,14 @@ fun main(){
 
 fun nextPlayerMove(peg: Int, pos: Pair<Int,Int>){
 
-    if (free[pos] == True ){
-        ok = !ok
-        free[pos] == False
-        occ[pos] == True
+    if (free.contains(pos)){
+        ok = true
+        free.remove(pos)
+        occ.add(pos)
+    } else {
+        ok = false
+        println("Position already occupied.")
+        return
     }
 
     when (pos.first){
@@ -113,14 +143,17 @@ fun nextPlayerMove(peg: Int, pos: Pair<Int,Int>){
         3 -> six.add(peg)
     }
 
-    next = !next
-    ok = !ok
+    // TODO: Update board state (s) with peg value
 
+    next = !next
 }
 
-fun gameOver(over): String{
-    if (over &&)
+fun gameOver(over: Boolean): String{
+    // TODO: Implement proper win condition check
+    if (over /* && win condition */)
         return "Player A wins"
     else
         return "Player B wins"
 }
+
+// TODO: Implement checkWin() function to determine if the game
