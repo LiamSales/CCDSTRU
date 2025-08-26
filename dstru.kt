@@ -233,3 +233,12 @@ fun main() {
         }
     }
 }
+
+
+// lesson learned: dont try to deviate from specs
+// use type alias, pre defined "set" structure
+// board reset can be moved to its own function
+// spread things out for more modularization, not everything should be in main
+// while (true) + return base case is a goated combo for user input validation
+// could have used the when statement for the game over part
+// overall id grade myself a 5/10 here
