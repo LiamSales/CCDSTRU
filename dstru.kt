@@ -235,10 +235,12 @@ fun main() {
 }
 
 
-// lesson learned: dont try to deviate from specs
-// use type alias, pre defined "set" structure
+// lesson learned: don't try to deviate from specs
+// understand what the code is asking for rather than blindly coding, W was referring to a set of sets, that was put there for a reason
+// use type alias, pre-defined "set" structure
 // board reset can be moved to its own function
 // spread things out for more modularization, not everything should be in main
 // while (true) + return base case is a goated combo for user input validation
-// could have used the when statement for the game over part
+// could have used the when statement for the game over part, was careless in understanding the specs
+// always avoid vacuous truths when necessary by going if item.all, we also have to make sure item.notempty, otherwise empty sets will always qualify
 // overall id grade myself a 5/10 here
